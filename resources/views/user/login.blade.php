@@ -25,6 +25,7 @@
                 <a class="btn btn-danger" href="{{ route('home') }}">Back</a>
             </div>
         </form>
+        <p>Belum punya akun? <a href="/register">Register</p>
     </div>
 </div>
 @endsection

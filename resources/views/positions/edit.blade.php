@@ -1,13 +1,14 @@
 @extends('app')
 @section('content')
 
-<form action="{{ route('positions.store') }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('positions.update', $position->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
+            @method('PUT')
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-12">
                     <div class="form-group">
                         <strong>Name:</strong>
-                        <input type="text" name="name" class="form-control" placeholder="Name">
+                        <input type="text" name="name" value="{{ $position->name }}" class="form-control" placeholder="Name">
                         @error('name')
                         <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                         @enderror
@@ -16,7 +17,7 @@
                 <div class="col-xs-12 col-sm-12 col-md-12">
                     <div class="form-group">
                         <strong>Keterangan:</strong>
-                        <input type="text" name="keterangan" class="form-control" placeholder="Keterangan">
+                        <input type="text" name="keterangan" value="{{ $position->keterangan }}" class="form-control" placeholder="Keterangan">
                         @error('keterangan')
                         <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                         @enderror
@@ -25,7 +26,7 @@
                 <div class="col-xs-12 col-sm-12 col-md-12">
                     <div class="form-group">
                         <strong>Alias:</strong>
-                        <input type="text" name="alias" class="form-control" placeholder="Alias">
+                        <input type="text" name="alias" value="{{ $position->alias }}" class="form-control" placeholder="Alias">
                         @error('alias')
                         <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                         @enderror
