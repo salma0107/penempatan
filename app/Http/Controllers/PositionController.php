@@ -9,37 +9,41 @@ class PositionController extends Controller
     public function index()
     {
         $title = "Data Position";
-        $positions = Positions::orderBy('id','desc')->paginate(5);
-        return view('positions.index', compact('positions','title'));
+        $positions = Positions::orderBy('id','asc')->paginate(5);
+        return view('positions.index', compact(['positions' , 'title']));
     }
 
     public function create()
     {
-        $title = "Add Data Position";
-        return view('positions.create', compact('title'));
+        $title = "Tambah Data Position";
+        return view('positions.create', compact(['title']));
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required',
-            'keterangan' => 'required',
-            'alias' => 'required',
+            'keterangan',
+            'alias',
         ]);
         
         Positions::create($request->post());
 
-        return redirect()->route('positions.index')->with('success','Positions has been created successfully.');
+        return redirect()->route('positions.index')->with('success','Position has been created successfully.');
     }
 
-    public function edit(positions $position)
+    public function show(Positions $position)
+    {
+        return view('positions.show',compact('position'));
+    }
+
+    public function edit(Positions $position)
     {
         $title = "Edit Data Position";
         return view('positions.edit',compact('position', 'title'));
     }
 
-   
-    public function update(Request $request, positions $position)
+    public function update(Request $request, Positions $position)
     {
         $request->validate([
             'name' => 'required',
@@ -55,6 +59,6 @@ class PositionController extends Controller
     public function destroy(Positions $position)
     {
         $position->delete();
-        return redirect()->route('positions.index')->with('success','Company has been deleted successfully');
+        return redirect()->route('positions.index')->with('success','Position has been deleted successfully');
     }
 }

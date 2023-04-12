@@ -1,6 +1,6 @@
 @extends('app')
 @section('content')
-<form action="{{ route('departments.update',$departement->id) }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('departements.update',$departement->id) }}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('PUT')
     <div class="row">

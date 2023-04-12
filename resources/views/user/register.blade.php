@@ -1,7 +1,7 @@
 @extends('layout')
 @section('content')
 <div class="container">
-    <div class="col-md-6">
+    <div class="col-md-12">
         @if($errors->any())
         @foreach($errors->all() as $err)
         <p class="alert alert-danger">{{ $err }}</p>
@@ -27,7 +27,7 @@
             </div>
             <div class="mb-3">
                 <button class="btn btn-primary">Register</button>
-                <a class="btn btn-danger" href="{{ route('login') }}">Back</a>
+                <a class="btn btn-danger" href="{{ route('home') }}">Back</a>
             </div>
         </form>
     </div>
