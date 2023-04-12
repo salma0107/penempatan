@@ -1,7 +1,7 @@
 @extends('layout')
 @section('content')
-<div class="row">
-    <div class="col-md-6">
+<div class="container">
+    <div class="col-md-12 col-md-offset-10">
         @if(session('success'))
         <p class="alert alert-success">{{ session('success') }}</p>
         @endif
@@ -25,7 +25,7 @@
                 <a class="btn btn-danger" href="{{ route('home') }}">Back</a>
             </div>
         </form>
-        <p>Belum punya akun? <a href="/register">Register</p>
+        <p class="text-center">Kamu belum punya akun? ayo <a href="/register">Register</p>
     </div>
 </div>
 @endsection

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController; //untuk mendaftarkan controller yang akan dieksekusi
 use App\Http\Controllers\PositionController;
+use App\Http\Controllers\DepartmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +17,8 @@ use App\Http\Controllers\PositionController;
 */
 
 //ini untuk mendaftarkan link website
+// Route::resource('positions', PositionController::class);
+// Route::resource('departments', DepartementController::class);
 
 Route::get('register', [UserController::class, 'register'])->name('register');
 Route::post('register', [UserController::class, 'register_action'])->name('register.action');
@@ -32,5 +35,7 @@ Route::middleware('auth')->group(
         })->name('home');
 
         Route::resource('positions', PositionController::class);
+
+        Route::resource('departments', DepartmentController::class);
     }
 );  
