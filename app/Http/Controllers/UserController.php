@@ -83,4 +83,77 @@ class UserController extends Controller
         $request->session()->regenerateToken();
         return redirect('/');
     }
+
+    // TUGAS ADD USER
+    public function index()
+    {
+        $title = "Data User";
+        $user = User::orderBy('id', 'asc')->paginate();
+        return view('users.index', compact(['user', 'title']));
+    }
+
+    public function create()
+    {
+        $title = "Tambah data user";
+        return view('users.create', compact(['title']));
+    }
+
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|unique:users',
+            'password' => 'required',
+            'position' => 'required',
+            'departement' => 'required',
+        ]);
+
+        User::create($request->post());
+
+        return redirect()->route('users.index')->with('success', 'users has been created successfully.');
+    }
+
+    public function edit(User $user)
+    {
+        $title = "Edit Data position";
+        return view('users.edit', compact('user', 'title'));
+    }
+
+
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|unique:users,email,' . $id,
+            'position' => 'required',
+            'departement' => 'required',
+        ]);
+
+        $user = User::findOrFail($id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->position = $request->position;
+        $user->departement = $request->departement;
+        $user->save();
+
+        return redirect()->route('users.index')->with('success', 'User updated successfully.');
+    }
+
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return redirect()->route('users.index')->with('success', 'User deleted successfully.');
+    }
+
+    public function exportPdf()
+    {
+        $title = "Laporan Data User";
+        $users = User::orderBy('id', 'asc')->get();
+        $pdf = PDF::loadView('users.pdf', compact(['users', 'title']));
+        return $pdf->stream('laporan-user-pdf');
+    }
 }

@@ -34,8 +34,17 @@ Route::middleware('auth')->group(
         Route::post('password', [UserController::class, 'password_action'])->name('password.action');
         Route::get('logout', [UserController::class, 'logout'])->name('logout');
 
-        //route position 
+        // Route position
         Route::resource('positions', PositionController::class);
+        Route::get('position/export-excel', [PositionController::class, 'exportExcel'])->name('positions.exportExcel');
 
+        // Route departement
+        Route::get('departements/exportpdf', [DepartementController::class, 'exportpdf'])->name('exportpdf');
         Route::resource('departements', DepartementController::class);
+
+        // Route user
+        Route::get('users/exportpdf', [UserController::class, 'exportPdf'])->name('users.exportpdf');
+        Route::resource('users', UserController::class);
+
+       
     });

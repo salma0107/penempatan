@@ -27,7 +27,7 @@
                 <label for="manager_id">Manager</label>
                 <select name="manager_id" class="form-control">
                     @foreach ($managers as $manager)
-                    <option value="{{ $manager->id }}">{{ $manager->name }}</option>
+                    <option value="{{ $manager->id }}" {{($manager->id == $departement->manager_id)?'selected': ''}}>{{ $manager->name }}</option>
                     @endforeach
                 </select>
             </div>

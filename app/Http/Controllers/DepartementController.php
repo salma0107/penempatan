@@ -6,6 +6,7 @@ use App\Models\Departements;
 use Illuminate\Http\Request;
 use App\Models\Positions;
 use App\Models\User;
+use PDF;
 
 class DepartementController extends Controller
 {
@@ -75,5 +76,13 @@ class DepartementController extends Controller
     {
         $departement->delete();
         return redirect()->route('departements.index')->with('success', 'departements has been deleted successfully');
+    }
+
+    public function exportPdf()
+    {
+        $title = "Laporan Data Departement";
+        $departements = Departements::orderBy('id', 'asc')->get();
+        $pdf = PDF::loadview('departements.pdf', compact(['departements', 'title']));
+        return $pdf->stream('laporan-departement-pdf');
     }
 }
