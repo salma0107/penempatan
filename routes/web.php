@@ -4,6 +4,7 @@ use App\Http\Controllers\UserController; //Mendaftarkan controller yang akan dig
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\DepartementController;
+use App\Http\Controllers\PenempatanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +45,11 @@ Route::middleware('auth')->group(
 
         // Route user
         Route::get('users/exportpdf', [UserController::class, 'exportPdf'])->name('users.exportpdf');
+        Route::resource('users', UserController::class);
+
+        Route::resource('companies', PenempatanController::class);
+
+        Route::get('search/company', [CompanyController::class, 'autocomplete'])->name('search.company');
         Route::resource('users', UserController::class);
 
        

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Departements;
 use Illuminate\Http\Request;
-use App\Models\Positions;
+// use App\Models\Positions;
 use App\Models\User;
 use PDF;
 
