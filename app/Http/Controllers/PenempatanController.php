@@ -1,98 +1,122 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Models\Company;
-use App\Models\CompanyDetail;
+use App\Models\Penempatan;
+use App\Models\PenempatanDetail;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Charts\PenempatanLineChart;
 
 class PenempatanController extends Controller
 {
     public function index()
     {
-        $title = "Data Departements";
-        $companies = Company::orderBy('id', 'asc')->paginate(5);
-        return view('companies.index', compact(['companies', 'title']));
+        $title = "Data Penempatan";
+        $penempatans = Penempatan::orderBy('id', 'asc')->paginate(5);
+        return view('penempatans.index', compact(['title','penempatans']));
     }
 
     public function create()
     {
-        $title = "Tambah data";
-        $managers = User::where('position', 'Manager')->get();
-        return view('companies.create', compact(['managers', 'title']));
+        $title = "Tambah data Penempatan";
+        $managers = User::where('position', '1')->orderBy('id','asc')->get();
+        return view('penempatans.create', compact(['title','managers']));
     }
 
 
     public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'name' => 'required',
-            'location' => 'nullable',
-            'manager_id' => 'required',
-        ]);
 
-        Company::create($validatedData);
-
-        return redirect()->route('companies.index')->with('success', 'Departement created successfully.');
-    }
-
-
-    public function show(Company $departement)
-    {
-        return view('companies.show', compact('companies'));
-    }
-
-
-    public function edit(Company $departement)
-    {
-        $title = "Edit Data departement";
-        $managers = User::where('position', 'Manager')->get();
-        return view('companies.edit', compact(['departement', 'managers', 'title']));
-    }
-
-
-    public function update(Request $request, Company $departement)
     {
         $request->validate([
-            'name' => 'required',
-            'location' => 'required',
-            'manager_id' => 'required',
+            'no_penempatan' => 'required'
         ]);
+        $penempatan = [
+            'no_penempatan' => $request->no_penempatan,
+            'id_hrd' => $request->id_hrd,
+            'tgl_penempatan' => $request->tgl_penempatan,
+        ];
 
-        $departement->fill($request->post())->save();
+        if($result = Penempatan::create($penempatan)){
+            for ($i=1; $i <= $request->jml; $i++) { 
+                $details = [
+                    'no_penempatan' => $request->no_penempatan,
+                    'id_company' => $request['companyId'.$i],
+                    'company_name' => $request['companyName'.$i],
+                    'departmenCompany' => $request['departmenCompany'.$i],
+                    'posisi' => $request['posisi'.$i],
 
-        return redirect()->route('companies.index')->with('success', 'Departemnt Has Been updated successfully');
+                ];
+                PenempatanDetail::create($details);
+            }
+        } 
+
+        return redirect()->route('positions.index')->with('success', 'Departement created successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Company  $companies
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Company $departement)
+
+    public function show(Penempatan $penempatan)
     {
-        $departement->delete();
-        return redirect()->route('companies.index')->with('success', 'departements has been deleted successfully');
+        return view('penempatans.show', compact('Departement'));
+    }
+
+
+    public function edit(Penempatan $penempatan)
+    {
+        $title = "Edit Data penem$penempatan";
+        $managers = User::where('position', '1')->orderBy('id','asc')->get();
+        $detail = PenempatanDetail::where('no_penempatan', $penempatan->no_penempatan)->orderBy('id','asc')->get();
+        return view('penempatans.edit',compact('penempatan' , 'title', 'managers', 'detail'));
+    }
+
+
+    public function update(Request $request, Penempatan $penempatan)
+    {
+        $penempatan = [
+            'no_penempatan' => $request->no_penempatan,
+            'id_hrd' => $request->id_hrd,
+            'tgl_penempatan' => $request->tgl_penempatan,
+        ];
+
+        if($penempatan->fill($penempatans)->save()){
+            PenempatanDetails::where('no_penempatan', $penempatan->no_penempatan)->delete();
+            for ($i=1; $i <= $request->jml; $i++) { 
+                $details = [
+                    'no_penempatan' => $request->no_penempatan,
+                    'id_company' => $request['companyId'.$i],
+                    'company_name' => $request['companyName'.$i],
+                    'departmenCompany' => $request['departmenCompany'.$i],
+                    'posisi' => $request['posisi'.$i],
+
+                ];
+                PenempatanDetail::create($details);
+            }
+        } 
+
+        return redirect()->route('penempatans.index')->with('success', 'Departemnt Has Been updated successfully');
+    }
+
+    public function destroy(Penempatan $penempatan)
+    {
+        $penempatan->delete();
+        return redirect()->route('penempatans.index')->with('success', 'departements has been deleted successfully');
     }
 
     // public function exportPdf()
     // {
     //     $title = "Laporan Data Departement";
-    //     $companies = Company::orderBy('id', 'asc')->get();
+    //     $penempatans = Penempatan::orderBy('id', 'asc')->get();
     //     $pdf = PDF::loadview('departements.pdf', compact(['departements', 'title']));
-    //     return $pdf->stream('laporan-departement-pdf');
+    //     return $pdf->stream('laporan-penem$penempatan-pdf');
     // }
 
     public function chartLine()
     {
-        $api = url('/chart-line-ajax');
+        $api = url('penempatans.chartLineAjax');
    
-        $chart = new UserLineChart;
+        $chart = new PenempatanLineChart;
         $chart->labels(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'])->load($api);
-          
-        return view('chartLine', compact('chart'));
+        $title = "Beranda";
+        return view('home', compact('chart', 'title'));
     }
    
     /**
@@ -103,21 +127,18 @@ class PenempatanController extends Controller
     public function chartLineAjax(Request $request)
     {
         $year = $request->has('year') ? $request->year : date('Y');
-        $users = User::select(\DB::raw("COUNT(*) as count"))
-                    ->whereYear('created_at', $year)
-                    ->groupBy(\DB::raw("Month(created_at)"))
-                    ->pluck('count');
+        $penempatans = Penempatan::select(\DB::raw("COUNT(*) as count"))
+                                ->whereYear('tgl_penempatan', $year)
+                                ->groupBy(\DB::raw("Month(tgl_penempatan)"))
+                                ->pluck('count');
   
-        $chart = new UserLineChart;
+        $chart = new PenempatanLineChart;
   
-        $chart->dataset('New User Register Chart', 'line', $users)->options([
+        $chart->dataset('Penempatan Chart', 'bar', $penempatans)->options([
                     'fill' => 'true',
                     'borderColor' => '#51C1C0'
                 ]);
   
         return $chart->api();
     }
-
-
-    
 }

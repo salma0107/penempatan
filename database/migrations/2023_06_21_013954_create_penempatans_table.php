@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('positions', function (Blueprint $table) {
+        Schema::create('penempatans', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('keterangan');
-            $table->string('alias');
+            $table->string('no_penempatan')->nullable();
+            $table->date('tgl_penempatan')->nullable();
+            $table->integer('id_hrd')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('positions');
+        Schema::dropIfExists('penempatans');
     }
 };

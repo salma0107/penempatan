@@ -47,6 +47,10 @@ Route::middleware('auth')->group(
         Route::get('users/exportpdf', [UserController::class, 'exportPdf'])->name('users.exportpdf');
         Route::resource('users', UserController::class);
 
+         // Route user
+         Route::get('penempatans/exportpdf', [PenempatanController::class, 'exportPdf'])->name('penempatans.exportpdf');
+         Route::resource('penempatans', PenempatanController::class);
+
         Route::resource('companies', PenempatanController::class);
 
         Route::get('search/company', [CompanyController::class, 'autocomplete'])->name('search.company');

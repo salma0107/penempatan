@@ -4,7 +4,7 @@ namespace App\Charts;
 
 use ConsoleTVs\Charts\Classes\Chartjs\Chart;
 
-class UserLineChart extends Chart
+class PenempatanLineChart extends Chart
 {
     /**
      * Initializes the chart.

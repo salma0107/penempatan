@@ -1,14 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use Illuminate\Http\Company;
+use App\Models\Company;
 use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
-    //
-
     public function autocomplete(Request $request)
     {
         $data = Company::select("name as value", "id")
@@ -16,5 +13,10 @@ class CompanyController extends Controller
                     ->get();
     
         return response()->json($data);
+    }
+
+    public function show(Company $company)
+    { 
+        return response()->json($company);
     }
 }

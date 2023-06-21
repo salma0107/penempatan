@@ -13,11 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('penempatans', function (Blueprint $table) {
+        Schema::create('penempatan_details', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('posisi');
-            $table->string('company');
+            $table->string('no_penempatan')->nullable();
+            $table->string('id_company')->nullable();
+            $table->string('departmenCompany')->nullable();
+            $table->string('posisi')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('penempatans');
+        Schema::dropIfExists('penempatan_details');
     }
 };
