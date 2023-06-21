@@ -8,7 +8,7 @@
 @endif
 <div class="text-end mb-2">
   <a class="btn btn-light" href="{{ route('exportpdf') }}"> Export</a>
-  <a class="btn btn-success" href="{{ route('companies.create') }}"> Add Department</a>
+  <a class="btn btn-success" href="{{ route('departements.create') }}"> Add Department</a>
 </div>
 <table class="table" id="example">
   

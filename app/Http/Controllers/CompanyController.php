@@ -1,22 +1,23 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Company;
+use App\Models\Companies;
 use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
-    public function autocomplete(Request $request)
+    public function index()
     {
-        $data = Company::select("name as value", "id")
-                    ->where('name', 'LIKE', '%'. $request->get('search'). '%')
-                    ->get();
-    
-        return response()->json($data);
+        $title = "Data Company";
+        $companies = Companies::orderBy('id', 'asc')->paginate();
+        return view('companies.index', compact('companies', 'title'));
     }
 
-    public function show(Company $company)
-    { 
-        return response()->json($company);
+    public function create()
+    {
+        $title = "Tambah data Company";
+        $managers = Companies::where('position', '1')->orderBy('id', 'asc')->get();
+        return view('companies.create', compact('title', 'managers'));
     }
+
 }

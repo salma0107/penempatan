@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Departements;
 use Illuminate\Http\Request;
-// use App\Models\Positions;
 use App\Models\User;
 use PDF;
 
@@ -19,7 +18,7 @@ class DepartementController extends Controller
 
     public function create()
     {
-        $title = "Tambah data";
+        $title = "Tambah Data Departement";
         $managers = User::where('position', 'Manager')->get();
         return view('departements.create', compact(['managers', 'title']));
     }

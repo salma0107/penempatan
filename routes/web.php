@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\PenempatanController;
+use App\Http\Controllers\CompanyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,9 +17,6 @@ use App\Http\Controllers\PenempatanController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::resource('companies', PositionController::class);
-Route::resource('companies', DepartementController::class);
 
 
 Route::get('register', [UserController::class, 'register'])->name('register');
@@ -47,13 +45,17 @@ Route::middleware('auth')->group(
         Route::get('users/exportpdf', [UserController::class, 'exportPdf'])->name('users.exportpdf');
         Route::resource('users', UserController::class);
 
-         // Route user
-         Route::get('penempatans/exportpdf', [PenempatanController::class, 'exportPdf'])->name('penempatans.exportpdf');
-         Route::resource('penempatans', PenempatanController::class);
+        // Route Penempatan
+        Route::get('penempatans/exportpdf', [PenempatanController::class, 'exportPdf'])->name('penempatans.exportpdf');
+        Route::resource('penempatans', PenempatanController::class);
 
-        Route::resource('companies', PenempatanController::class);
+        // Route Company
+        Route::get('companies/exportpdf', [CompanyController::class, 'exportPdf'])->name('companies.exportpdf');
+        Route::resource('companies', CompanyController::class);
 
-        Route::get('search/company', [CompanyController::class, 'autocomplete'])->name('search.company');
+
+
+        Route::get('search/companies', [CompanyController::class, 'autocomplete'])->name('search.companies');
         Route::resource('users', UserController::class);
 
        
